@@ -80,13 +80,18 @@ def View_tasks(user):
             else:
                 print("Description Can't be empty")
 
-        # Priority
-        while True:
-            new_prio = session.prompt(f"Priority> ", default=old_task["Priority"])
-            if len(new_prio) != 0:
-                break
-            else:
-                print("Priority Title Can't be empty")
+        new_answers = inquirer.prompt([
+            inquirer.List(
+                name="priority",
+                message="Change task priority",
+                choices=["Low", "Medium", "High"]
+            ),
+            inquirer.List(
+                name="status",
+                message="Change task status",
+                choices=["Pending", "In Progress", "Open", "Completed"]
+            )
+        ])
 
         # Due Date
         while True:
@@ -96,7 +101,7 @@ def View_tasks(user):
             else:
                 print("Invalid Date\n")
 
-        Task_Operations.modify_Task(task_id, new_title, new_desc, new_prio, new_due_date)
+        Task_Operations.modify_Task(task_id, new_title, new_desc, new_answers["status"], new_answers["priority"], new_due_date)
 
     else:
         Task_Operations.delete_task(task_id)
@@ -130,7 +135,6 @@ def Sort_tasks(user):
         )
     ]
 
-
     keyword = inquirer.prompt(sort[:1])["sort"]
     sorted_tasks = None
 
@@ -149,15 +153,37 @@ def Sort_tasks(user):
 def Filter_tasks(user):
     tasks = user.get_tasks()
     
+    filters = [
+        inquirer.Checkbox(
+            name="priority",
+            message="Choose priorities to filter by",
+            choices=Task_Operations.get_unique_priority()
+        ),
+        
+        inquirer.Checkbox(
+            name="status",
+            message="Choose status to filter by",
+            choices=Task_Operations.get_unique_status()
+        ),
+
+        inquirer.Checkbox(
+            name="due_date",
+            message="Choose dates to filter by",
+            choices=Task_Operations.get_unique_due_date()
+        ),
+    ]
+
+    filters_answers = inquirer.prompt(filters)
+
     filtered_tasks = Task_Operations.filter_tasks(
         tasks,
-        due_date=input("Enter due_date: "),
-        priority=input("Enter Priority: "),
-        status=input("Enter Status: ")
+        due_date=filters_answers["due_date"],
+        priority=filters_answers["priority"],
+        status=filters_answers["status"],
     )
         
     print(filtered_tasks)
-    inquirer.prompt([inquirer.Confirm(name="done")])
+    inquirer.prompt([inquirer.List(name="done", choices=["Back"])])
 
 def Update_Profile(user):
     from prompt_toolkit import PromptSession
@@ -193,7 +219,6 @@ def Update_Profile(user):
     user.update_profile(new_fname, new_lname, new_mobile_number)
 
     print("All info updated!")
-    
 
 def User_flow(user):
     questions = [

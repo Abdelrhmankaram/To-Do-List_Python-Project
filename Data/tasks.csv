@@ -2,7 +2,7 @@ Task ID,Title,Description,Priority,Status,Date Created,Due Date,Owner
 0,Setup Database,Initialize database schema,High,Open,2026-01-01,2026-01-05,30309201401394
 1,API Development,Develop REST API for tasks,High,In Progress,2026-01-02,2026-01-10,30309201401394
 2,UI Desig,Design dashboard interfac,Mediu,Open,2026-01-03,2026-01-17,30309201401394
-3,Authentication,Implement login and JWT auth,High,Completed,2025-12-28,2026-01-03,30309201401394
+3,Authentication,Implement login and JWT auth,Medium,Open,2025-12-28,03-2-2026,30309201401394
 4,Unit Testing,Write unit tests,Medium,Pending,2026-01-04,2026-01-15,30309201401394
 6,Bug Fixing,Fix reported bugs,High,In Progress,2026-01-06,2026-01-09,30309201401394
 7,Code Review,Review pull requests,Medium,Open,2026-01-06,2026-01-08,30309201401394

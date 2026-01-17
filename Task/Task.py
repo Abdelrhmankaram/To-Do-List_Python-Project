@@ -88,24 +88,46 @@ class Task_Operations:
     @staticmethod
     def filter_tasks(tasks, priority=None, status=None, due_date=None):
         """
-        Filter tasks based on entered params
-        
-        :param tasks: Tasks data for the logged in user
-        :param priority: Priority to filter based on
-        :param status: Date to filter based on
-        :param due_date: Due Date to filter based on
+        Filter tasks based on multiple values per field.
+
+        :param tasks: pandas DataFrame of tasks
+        :param priority: list[str] | str | None
+        :param status: list[str] | str | None
+        :param due_date: list[str] | str | None
         """
         filter_result = tasks
-        if priority != None:
-            filter_result = tasks[tasks["Priority"].str.contains(priority, case=False, na=False)]
-        
-        if status != None:
-            filter_result = tasks[tasks["Status"].str.contains(status, case=False, na=False)]
 
-        if due_date != None:
-            filter_result = tasks[tasks["Due Date"].str.contains(due_date, case=False, na=False)]
-        
+        def normalize(value):
+            if value is None:
+                return None
+            if isinstance(value, (list, tuple, set)):
+                return list(value)
+            return [value]
+
+        priority = normalize(priority)
+        status = normalize(status)
+        due_date = normalize(due_date)
+
+        if priority:
+            pattern = "|".join(priority)
+            filter_result = filter_result[
+                filter_result["Priority"].str.contains(pattern, case=False, na=False)
+            ]
+
+        if status:
+            pattern = "|".join(status)
+            filter_result = filter_result[
+                filter_result["Status"].str.contains(pattern, case=False, na=False)
+            ]
+
+        if due_date:
+            pattern = "|".join(due_date)
+            filter_result = filter_result[
+                filter_result["Due Date"].str.contains(pattern, case=False, na=False)
+            ]
+
         return filter_result
+
         
 
     @staticmethod
@@ -117,13 +139,35 @@ class Task_Operations:
         return int(data.tail(1)['Task ID'].iloc[0]) + 1
     
     @staticmethod
-    def modify_Task(task_id, title, desc, prio, date):
+    def modify_Task(task_id, title, desc, status, prio, date):
         data = read_tasks_data()
         idx = data.index[data["Task ID"] == task_id][0]
 
         data.at[idx, "Title"] = title
         data.at[idx, "Description"] = desc
+        data.at[idx, "Status"] = status
         data.at[idx, "Priority"] = prio
         data.at[idx, "Due Date"] = date
 
         save_tasks_data(data)
+    
+    @staticmethod
+    def get_unique_priority():
+        data = read_tasks_data()
+        unique = list(data["Priority"].unique())
+
+        return unique
+    
+    @staticmethod
+    def get_unique_status():
+        data = read_tasks_data()
+        unique = list(data["Status"].unique())
+
+        return unique
+    
+    @staticmethod
+    def get_unique_due_date():
+        data = read_tasks_data()
+        unique = list(data["Due Date"].unique())
+
+        return unique
