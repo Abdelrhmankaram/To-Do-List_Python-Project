@@ -3,6 +3,7 @@ from User import User_operations
 from Data_Validators import user_data_validators
 
 def Signup():
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     questions = [
         inquirer.Text(
             name="ID",

@@ -1,9 +1,9 @@
 from datetime import datetime
 
-def validate_due_date(due_date: str, date_format: str = "%d-%m-%Y") -> bool:
+def validate_due_date(due_date: str, date_format: str = "%d-%m-%Y %H:%M") -> bool:
     """
     Validate that the due date:
-    1. Matches the format DD-MM-YYYY
+    1. Matches the format DD-MM-YYYY HH:MM
     2. Is in the future
     """
     try:
@@ -11,4 +11,3 @@ def validate_due_date(due_date: str, date_format: str = "%d-%m-%Y") -> bool:
         return parsed_date > datetime.now()
     except ValueError:
         return False
-

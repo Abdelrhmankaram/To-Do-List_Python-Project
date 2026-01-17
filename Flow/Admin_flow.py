@@ -3,13 +3,14 @@ from Task import Task_Operations
 from User import Admin_operations
 
 def view_all_users(admin):
-    tasks = Admin_operations.view_all_users()
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
+    users = Admin_operations.view_all_users()
 
-    tasks_questions = [
+    users_questions = [
         inquirer.List(
-            name="task",
+            name="user",
             message="Choose task to manage",
-            choices=[f"{int(j[0])}: {j[1]} {j[2]} - {j[3]} - {j[-2]}" for i, j in tasks.iterrows() if j[-1] == "User"]
+            choices=[f"{int(j[0])}: {j[1]} {j[2]} - {j[3]} - {j[-2]}" for i, j in users.iterrows() if j[-1] == "User"] + ["Back"]
         ),
         inquirer.List(
             name="operation",
@@ -18,11 +19,17 @@ def view_all_users(admin):
         ),
     ]
 
-    user_id = int(inquirer.prompt(tasks_questions[:1])["task"].split(":")[0])
+    task_choice = inquirer.prompt(users_questions[:1])["user"]
+
+    if task_choice == "Back":
+        import os; os.system('cls' if os.name == 'nt' else 'clear')
+        return
+
+    user_id = int(task_choice.split(":")[0])
     print(type(user_id))
     print(user_id)
 
-    operation = inquirer.prompt(tasks_questions[1:])["operation"]
+    operation = inquirer.prompt(users_questions[1:])["operation"]
 
     if operation == "Yes":
         Admin_operations.Activate_deactivate_account(user_id)
@@ -31,13 +38,14 @@ def view_all_users(admin):
         return
 
 def view_all_tasks(admin):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     tasks = Admin_operations.view_all_tasks()
 
     tasks_questions = [
         inquirer.List(
             name="task",
             message="Choose task to manage",
-            choices=[f"{j[0]}: {j[1]} - {j[6]}" for i, j in tasks.iterrows()]
+            choices=[f"{j[0]}: {j[1]} - {j[6]}" for i, j in tasks.iterrows()] + ["Back"]
         ),
         inquirer.List(
             name="operation",
@@ -46,7 +54,13 @@ def view_all_tasks(admin):
         ),
     ]
 
-    task_id = int(inquirer.prompt(tasks_questions[:1])["task"].split(":")[0])
+    task_choice = inquirer.prompt(tasks_questions[:1])["task"]
+
+    if task_choice == "Back":
+        import os; os.system('cls' if os.name == 'nt' else 'clear')
+        return
+
+    task_id = int(task_choice.split(":")[0])
 
     print(task_id)
 
@@ -54,10 +68,9 @@ def view_all_tasks(admin):
 
     if operation == "Yes":
         Admin_operations.delete_task(task_id)
-        
-
 
 def Admin_flow(admin):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     questions = [
         inquirer.List(
             name="choice",

@@ -6,6 +6,7 @@ from Flow import User_flow
 from Flow import Admin_flow
 
 def Login():
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     questions = [
         inquirer.Text(
             name="email",

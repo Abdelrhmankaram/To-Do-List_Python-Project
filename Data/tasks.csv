@@ -1,15 +1,16 @@
 Task ID,Title,Description,Priority,Status,Date Created,Due Date,Owner
-0,Setup Database,Initialize database schema,High,Open,2026-01-01,2026-01-05,30309201401394
-1,API Development,Develop REST API for tasks,High,In Progress,2026-01-02,2026-01-10,30309201401394
-2,UI Desig,Design dashboard interfac,Mediu,Open,2026-01-03,2026-01-17,30309201401394
-3,Authentication,Implement login and JWT auth,Medium,Open,2025-12-28,03-2-2026,30309201401394
-4,Unit Testing,Write unit tests,Medium,Pending,2026-01-04,2026-01-15,30309201401394
-6,Bug Fixing,Fix reported bugs,High,In Progress,2026-01-06,2026-01-09,30309201401394
-7,Code Review,Review pull requests,Medium,Open,2026-01-06,2026-01-08,30309201401394
-8,Documentation,Write project documentation,Low,Open,2026-01-07,2026-01-18,30309201401394
-9,Performance Optimization,Optimize database queries,High,Pending,2026-01-08,2026-01-14,30309201401394
-10,Logging System,Implement centralized logging,Medium,In Progress,2026-01-09,2026-01-16,30309201401394
-11,Notification Service,Email and in-app notifications,Low,Open,2026-01-10,2026-01-22,30309201401394
-12,Role Management,Add roles and permissions,High,Open,2026-01-11,2026-01-19,30309201401394
-13,Backup Strategy,Setup automated backups,Medium,Pending,2026-01-12,2026-01-25,30309201401394
-14,Security Audit,Run security vulnerability scan,High,Open,2026-01-13,2026-01-18,30309201401394
+0,Setup Database,Initialize database schema,High,Open,01-01-2026 09:15,05-01-2026 18:00,30309201401394
+1,API Development,Develop REST API for tasks,High,In Progress,02-01-2026 14:40,10-01-2026 12:30,30309201401394
+2,UI Design,Design dashboard interface,Medium,Open,03-01-2026 11:05,12-01-2026 15:45,30309201401394
+3,Authentication,Implement login and JWT auth,High,Completed,28-12-2025 16:30,03-01-2026 09:00,30309201401394
+4,Unit Testing,Write unit tests,Medium,Pending,04-01-2026 10:20,15-01-2026 17:20,30309201401394
+5,Deployment,Deploy app to production,Low,Pending,05-01-2026 13:55,20-01-2026 11:10,30309201401394
+6,Bug Fixing,Fix reported bugs,High,In Progress,06-01-2026 08:45,09-01-2026 14:50,30309201401394
+7,Code Review,Review pull requests,Medium,Open,06-01-2026 15:10,08-01-2026 16:35,30309201401394
+8,Documentation,Write project documentation,Low,Open,07-01-2026 12:35,18-01-2026 10:25,30309201401394
+9,Performance Optimization,Optimize database queries,High,Pending,08-01-2026 09:50,14-01-2026 13:40,30309201401394
+10,Logging System,Implement centralized logging,Medium,In Progress,09-01-2026 17:00,16-01-2026 09:55,30309201401394
+11,Notification Service,Email and in-app notifications,Low,Open,10-01-2026 11:25,22-01-2026 15:30,30309201401394
+12,Role Management,Add roles and permissions,High,Open,11-01-2026 14:05,19-01-2026 12:15,30309201401394
+13,Backup Strategy,Setup automated backups,Medium,Pending,12-01-2026 10:40,25-01-2026 18:45,30309201401394
+14,Security Audit,Run security vulnerability scan,High,Open,13-01-2026 16:15,18-01-2026 11:00,30309201401394

@@ -3,6 +3,7 @@ from Task import Task_Operations, Task
 from Data_Validators import task_data_validators, user_data_validators
 
 def Add_task(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     questions = [
         inquirer.Text(
             name="title",
@@ -36,24 +37,29 @@ def Add_task(user):
     task.save_task()
 
 def View_tasks(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     tasks = user.get_tasks()
 
     tasks_questions = [
         inquirer.List(
             name="task",
             message="Choose task to manage",
-            choices=[f"{j[0]}: {j[1]} - {j[6]}" for i, j in tasks.iterrows()]
+            choices=[f"{j[0]}: {j[1]} - {j[6]}" for i, j in tasks.iterrows()] + ["Back"]
         ),
         inquirer.List(
             name="operation",
             message="What operation whould you like to do?",
-            choices=["Edit", "Delete"]
+            choices=["Edit", "Delete", "Back"]
         ),
     ]
 
-    task_id = int(inquirer.prompt(tasks_questions[:1])["task"].split(":")[0])
+    task_choice = inquirer.prompt(tasks_questions[:1])["task"]
 
-    print(task_id)
+    if task_choice == "Back":
+        import os; os.system('cls' if os.name == 'nt' else 'clear')
+        return
+    
+    task_id = int(task_choice.split(":")[0])
 
     operation = inquirer.prompt(tasks_questions[1:])["operation"]
 
@@ -103,26 +109,33 @@ def View_tasks(user):
 
         Task_Operations.modify_Task(task_id, new_title, new_desc, new_answers["status"], new_answers["priority"], new_due_date)
 
+    elif operation == "Back":
+        import os; os.system('cls' if os.name == 'nt' else 'clear')
+        View_tasks(user)
     else:
         Task_Operations.delete_task(task_id)
 
 def Search_tasks(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     tasks = user.get_tasks()
     search_keyword = [
         inquirer.Text(
             name="keyword",
             message="Enter title to search for",
         ),
-        inquirer.Confirm(
-            name="done"
+        inquirer.List(
+            name="done",
+            choices=["Back"]
         )
     ]
     keyword = inquirer.prompt(search_keyword[:1])["keyword"]
     result = Task_Operations.search_tasks(tasks, keyword)
     print(result)
     inquirer.prompt(search_keyword[1:])
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
 
 def Sort_tasks(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     tasks = user.get_tasks()
     sort = [
         inquirer.List(
@@ -130,8 +143,9 @@ def Sort_tasks(user):
             message="Sort by what",
             choices=["Date", "Priority", "Status"]
         ),
-        inquirer.Confirm(
-            name="done"
+        inquirer.List(
+            name="done",
+            choices=["Ok"]
         )
     ]
 
@@ -149,8 +163,10 @@ def Sort_tasks(user):
         
     print(sorted_tasks)
     inquirer.prompt(sort[1:])
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
 
 def Filter_tasks(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     tasks = user.get_tasks()
     
     filters = [
@@ -183,9 +199,11 @@ def Filter_tasks(user):
     )
         
     print(filtered_tasks)
-    inquirer.prompt([inquirer.List(name="done", choices=["Back"])])
+    inquirer.prompt([inquirer.List(name="done", choices=["Ok"])])
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
 
 def Update_Profile(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
     from prompt_toolkit import PromptSession
 
     print("Edit your info\n")
@@ -219,8 +237,42 @@ def Update_Profile(user):
     user.update_profile(new_fname, new_lname, new_mobile_number)
 
     print("All info updated!")
+    inquirer.prompt([inquirer.List(name="done", choices=["Ok"])])
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
+
+def print_tasks(title, df):
+    print(f"{title}\n")
+
+    if df.empty:
+        print("No tasks found.\n")
+        return
+
+    cols = ["Title", "Priority", "Status", "Due Date"]
+    df = df[cols].copy()
+
+    df["Due Date"] = df["Due Date"].dt.strftime("%d-%m-%Y %H:%M")
+
+    print(df.to_string(index=False))
+    print()
 
 def User_flow(user):
+    import os; os.system('cls' if os.name == 'nt' else 'clear')
+    print("Incoming Deadlines")
+    print("------------------")
+    print_tasks(
+        "Tasks due within 24 hours:",
+        Task_Operations.display_upcoming_deadlines(user.ID)
+    )
+
+    print("------------------------------------------------------------\n")
+
+    print("Overdue Tasks")
+    print("-------------")
+    print_tasks(
+        "Overdue tasks:",
+        Task_Operations.display_overdue_tasks(user.ID)
+    )
+    
     questions = [
         inquirer.List(
             name="choice",
@@ -250,4 +302,5 @@ def User_flow(user):
         elif answers["choice"] == "Update Profile":
             Update_Profile(user)
         else:
+            import os; os.system('cls' if os.name == 'nt' else 'clear')
             return

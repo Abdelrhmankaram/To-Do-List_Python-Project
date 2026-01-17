@@ -1,5 +1,5 @@
 from Data_Operations import *
-from datetime import date
+from datetime import date, datetime, timedelta
 import pandas as pd
 
 class Task:
@@ -9,7 +9,7 @@ class Task:
         self.description = description
         self.priority = priority
         self.status = status
-        self.date_created = date.today()
+        self.date_created = datetime.now()
         self.due_date = due_date
         self.owner = owner
     
@@ -29,8 +29,6 @@ class Task:
 
         save_tasks_data(data)
 
-
-
 class Task_Operations:
     @staticmethod
     def retrieve_tasks_by_userid(id):
@@ -42,7 +40,6 @@ class Task_Operations:
         data = read_tasks_data()
         return data[data["Owner"] == id]
 
-    
     @staticmethod
     def delete_task(task_id):
         """
@@ -171,3 +168,49 @@ class Task_Operations:
         unique = list(data["Due Date"].unique())
 
         return unique
+    
+    @staticmethod
+    def display_upcoming_deadlines(user_id):
+        data = read_tasks_data()
+        data = data[data["Owner"].astype(int) == int(user_id)]
+
+        data = data[data["Status"] != "Completed"]
+
+        data["Due Date"] = data["Due Date"].astype(str).str.strip()
+
+        data["Due Date"] = pd.to_datetime(
+            data["Due Date"],
+            format="mixed",   # pandas >= 2.0
+            errors="coerce"
+        )
+
+        now = datetime.now()
+        next_24_hours = now + timedelta(hours=24)
+
+        upcoming = data[
+            (data["Due Date"] >= now) &
+            (data["Due Date"] <= next_24_hours)
+        ]
+
+        return upcoming
+
+    @staticmethod
+    def display_overdue_tasks(user_id):
+        data = read_tasks_data()
+        data = data[data["Owner"] == int(user_id)]
+
+        data = data[data["Status"] != "Completed"]
+
+        data["Due Date"] = data["Due Date"].astype(str).str.strip()
+
+        data["Due Date"] = pd.to_datetime(
+            data["Due Date"],
+            format="mixed",   # pandas ≥ 2.0
+            errors="coerce"
+        )
+
+        now = datetime.now()
+
+        overdue = data[data["Due Date"] < now]
+
+        return overdue
